@@ -63,7 +63,7 @@ iterate(1970, Infinity, (y, m, d) => {
   console.log(now+'ms');
   now -= 1000*60*60*24;
   if (now <= 0) {
-    console.log('Today is '+y+' '+m+'d');
+    console.log('Today is '+y+' '+m+' '+d);
     return false;
   } else return true;
 });
