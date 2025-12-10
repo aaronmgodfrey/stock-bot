@@ -23,14 +23,14 @@ const iterate = async (startYear, endYear, action) => {
 
 console.log('------------------');
 console.log('Mapping timeframe');
-let now = Date.now();
+let now = Date.now(), start;
 iterate(1970, Infinity, async(y, m, d) => {
   now -= 86400000;
   if (now <= 0) {
     YEAR = y;
     MONTH = m;
     DAY = d-1; // Today isn't fully mapped!
-    console.log('Date.now() renders today as '+y+'-'+m+'-'+d);
+    start();
     return false;
   } else return true;
 });
@@ -75,11 +75,11 @@ const save = _ => {
     });
   }
 }
-setTimeout(() => {
+start = _ => {
   load();
   console.log(Market);
   save();
-}, 5000);
+}
 
 
 
