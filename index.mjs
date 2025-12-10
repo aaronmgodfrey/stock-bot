@@ -10,7 +10,7 @@ async function example_getStocksAggregates() {
       {
         stocksTicker: "TSLA",
         multiplier: "1",
-        timespan: "day",
+        timespan: "minute",
         from: "2025-11-01",
         to: "2025-11-30",
         adjusted: "true",
