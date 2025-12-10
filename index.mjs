@@ -44,7 +44,7 @@ const load = _ => {
       const filename = `${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}.json`;
       if (!fs.existsSync(filename)) {
         Market[ticker][filename] = [];
-        continue;
+        return true;
       }
       try {
         Market[ticker][filename] = JSON.parse(filename);
@@ -52,6 +52,7 @@ const load = _ => {
         console.warn(filename+' is corrupted!');
         Market[ticker][filename] = [];
       }
+      return true;
     });
   }
 }
@@ -70,6 +71,7 @@ const save = _ => {
         }
         console.log('Done! @ '+s.length+' char');
       } else console.log(filename+' exists, skipping!');
+      return true;
     });
   }
 }
