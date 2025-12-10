@@ -8,7 +8,7 @@ async function example_getStocksAggregates() {
   try {
     const response = await rest.getStocksAggregates(
       {
-        stocksTicker: "AAPL",
+        stocksTicker: "TSLA",
         multiplier: "1",
         timespan: "day",
         from: "2025-11-01",
