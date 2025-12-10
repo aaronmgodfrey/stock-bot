@@ -2,13 +2,29 @@ import {restClient} from '@massive.com/client-js';
 import fs from 'fs';
 
 const token = fs.readFileSync('token.txt', 'utf-8').trim();
-const rest = restClient(token);
+const rest = restClient(token, 'https://api.massive.com');
 
-rest.stocks.aggregates('AAPL', 1, 'day', '2023-01-01', '2019-04-14').then(data => {
-	console.log(data);
-}).catch(e => {
-	console.error('An error happened:', e);
-});
+async function example_getStocksAggregates() {
+  try {
+    const response = await rest.getStocksAggregates(
+      {
+        stocksTicker: "AAPL",
+        multiplier: "1",
+        timespan: "day",
+        from: "2025-11-01",
+        to: "2025-11-30",
+        adjusted: "true",
+        sort: "asc",
+        limit: "120"
+      }
+    );
+    console.log('Response:', response);
+  } catch (e) {
+    console.error('An error happened:', e);
+  }
+}
+
+example_getStocksAggregates();
 
 
 
