@@ -41,6 +41,32 @@ const load = _ => {
 }
 load();
 
+// year inclusive
+// current day hard limit
+// parse real time by Date.now();
+
+const currentYear = 2025, currentMonth = 12, currentDay = 9;
+const iterate = (startYear, endYear, action) => {
+  for (let i = startYear; i < currYear; i++) {
+    const d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    for (let l = 1; l <= 12; l++) {
+      for (let k = 1; k <= d[l]; k++) {
+        //const filename = `${i}-${l < 10 ? '0'+l : l}-${k < 10 ? '0'+k : k}`;
+        if (!action(i, l, k)) return; // year, month, day
+      }
+    }
+  }
+}
+
+let now = Date.now();
+iterate(1970, Infinity, (y, m, d) => {
+  now -= 1000*60*60*24;
+  if (now <= 0) {
+    console.log('Today is '+y+' '+m+'d');
+    return false;
+  } else return true;
+});
+
 
 /*
 Market
@@ -68,7 +94,7 @@ async function example_getStocksAggregates() {
   }
 }
 
-example_getStocksAggregates();
+//example_getStocksAggregates();
 
 
 
