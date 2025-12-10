@@ -193,3 +193,4 @@ function backtestFromCandles(candles) {
     console.error('Error:', err.response ? err.response.data : err.message);
   }
 })();
+*/
