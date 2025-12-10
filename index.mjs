@@ -45,7 +45,6 @@ const load = _ => {
 // current day hard limit
 // parse real time by Date.now();
 
-const currentYear = 2025, currentMonth = 12, currentDay = 9;
 const iterate = (startYear, endYear, action) => {
   for (let i = startYear; i < endYear; i++) {
     const d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -58,15 +57,17 @@ const iterate = (startYear, endYear, action) => {
   }
 }
 
+console.log('------------------');
+console.log('Mapping timeframe');
 let now = Date.now();
 iterate(1970, Infinity, (y, m, d) => {
-  console.log(now+'ms');
   now -= 1000*60*60*24;
   if (now <= 0) {
     console.log('Today is '+y+' '+m+' '+d);
     return false;
   } else return true;
 });
+console.log('Done!');
 
 
 /*
