@@ -14,7 +14,7 @@ const iterate = (startYear, endYear, action) => {
     const unfinishedYear = i == YEAR, d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     for (let l = 1; l <= (unfinishedYear ? Math.min(MONTH, 12) : 12); l++) {
       const unfinishedMonth = unfinishedYear && l == MONTH;
-      for (let k = 1; k <= (unfinishedMonth ? Math.min(DAY, d[l])); k++) {
+      for (let k = 1; k <= (unfinishedMonth ? Math.min(DAY, d[l]) : d[l]); k++) {
         //const filename = `${i}-${l < 10 ? '0'+l : l}-${k < 10 ? '0'+k : k}`;
         if (!action(i, l, k)) return; // year, month, day
       }
