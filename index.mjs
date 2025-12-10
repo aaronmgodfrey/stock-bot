@@ -63,6 +63,7 @@ const save = _ => {
       const filename = `${ticker}-${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}.json`;
       if (!fs.existsSync(filename)) {
         console.log('Creating '+filename+'...');
+        console.log(Market[ticker][filename]);
         let s;
         try {
           fs.writeFileSync(filename, s = JSON.stringify(Market[ticker][filename]), 'utf-8');
@@ -76,6 +77,7 @@ const save = _ => {
   }
 }
 load();
+console.log(Market);
 save();
 
 
