@@ -1,4 +1,4 @@
-const {restClient} = require('@massive.com/client-js');
+import {restClient} from '@massive.com/client-js';
 
 const token = fs.readFileSync('token.txt', 'utf-8').trim();
 const rest = restClient(token);
