@@ -47,7 +47,7 @@ const load = _ => {
 
 const currentYear = 2025, currentMonth = 12, currentDay = 9;
 const iterate = (startYear, endYear, action) => {
-  for (let i = startYear; i < currYear; i++) {
+  for (let i = startYear; i < endYear; i++) {
     const d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     for (let l = 1; l <= 12; l++) {
       for (let k = 1; k <= d[l]; k++) {
@@ -59,7 +59,7 @@ const iterate = (startYear, endYear, action) => {
 }
 
 let now = Date.now();
-iterate(1970, 2000, (y, m, d) => {
+iterate(1970, Infinity, (y, m, d) => {
   console.log(now+'ms');
   now -= 1000*60*60*24;
   if (now <= 0) {
