@@ -4,18 +4,63 @@ import fs from 'fs';
 const token = fs.readFileSync('token.txt', 'utf-8').trim();
 const rest = restClient(token, 'https://api.massive.com');
 
+const tracked = ['TSLA'];
+
+const Market = {};
+const startYear = 2024, currYear = 2025;
+/*
+January: 31 days 
+February: 28 days (29 days in a leap year) 
+March: 31 days 
+April: 30 days 
+May: 31 days 
+June: 30 days 
+July: 31 days 
+August: 31 days 
+September: 30 days 
+October: 31 days 
+November: 30 days 
+December: 31 days 
+*/
+const d = [0, 31, 28, 31, ]
+const load = _ => {
+  Market = {};
+  for (const ticker of tracked) {
+    Market[ticker] = {};
+    for (let i = startYear; i < currYear; i++) {
+      const d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      for (let l = 1; l <= 12; l++) {
+        for (let k = 1; k <= d[l]; k++) {
+          const filename = `${i}-${l < 10 ? '0'+l : l}-${k < 10 ? '0'+k : k}`;
+          console.log(filename);
+          //if (fs.existsSync(
+          //Market[ticker] = {...Market[ticker], JSON.parse()};
+        }
+      }
+    }
+  }
+}
+load();
+
+
+/*
+Market
+  Ticker
+    Day @ 2023-01-24 : [], // minutely
+
+*/
+
 async function example_getStocksAggregates() {
   try {
     const response = await rest.getStocksAggregates(
       {
         stocksTicker: "TSLA",
         multiplier: "1",
-        timespan: "minute",
+        timespan: "hour",
         from: "2025-11-01",
         to: "2025-11-30",
         adjusted: "true",
         sort: "asc",
-        limit: "120"
       }
     );
     console.log('Response:', response);
