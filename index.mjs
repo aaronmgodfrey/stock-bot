@@ -28,9 +28,9 @@ let now = Date.now();
 iterate(1970, Infinity, (y, m, d) => {
   now -= 86400000;
   if (now <= 0) {
-    YEAR = YEAR;
-    MONTH = MONTH;
-    DAY = DAY-1; // Today isn't fully mapped!
+    YEAR = y;
+    MONTH = m;
+    DAY = d-1; // Today isn't fully mapped!
     console.log('Date.now() renders today as '+y+'-'+m+'-'+d);
     return false;
   } else return true;
