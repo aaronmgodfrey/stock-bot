@@ -9,7 +9,7 @@ const tracked = ['TSLA'];
 const Market = {};
 let YEAR, MONTH, DAY;
 YEAR = MONTH = DAY = Infinity;
-const iterate = (startYear, endYear, action) => {
+const iterate = async (startYear, endYear, action) => {
   for (let i = startYear; i <= Math.min(endYear, YEAR); i++) {
     const unfinishedYear = i == YEAR, d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     for (let l = 1; l <= (unfinishedYear ? Math.min(MONTH, 12) : 12); l++) {
