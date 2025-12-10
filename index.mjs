@@ -41,16 +41,16 @@ const load = _ => {
     console.log('Loading ticker: '+ticker);
     Market[ticker] = {};
     iterate(startYear, YEAR, async(y, m, d) => {
-      const filename = `${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}.json`;
+      const date = `${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}`, filename = `${ticker}-${date}.json`;
       if (!fs.existsSync(filename)) {
-        Market[ticker][filename] = [];
+        Market[ticker][date] = [];
         return true;
       }
       try {
-        Market[ticker][filename] = JSON.parse(filename);
+        Market[ticker][date] = JSON.parse(filename);
       } catch(e) {
         console.warn(filename+' is corrupted!');
-        Market[ticker][filename] = [];
+        Market[ticker][date] = [];
       }
       return true;
     });
@@ -60,13 +60,13 @@ const save = _ => {
   for (const ticker of tracked) {
     console.log('Saving ticker: '+ticker);
     iterate(startYear, YEAR, (y, m, d) => {
-      const filename = `${ticker}-${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}.json`;
+      const date = `${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}`, filename = `${ticker}-${date}.json`;
       if (!fs.existsSync(filename)) {
         console.log('Creating '+filename+'...');
-        console.log(Market[ticker][filename]);
+        console.log(Market[ticker][date]);
         let s;
         try {
-          fs.writeFileSync(filename, s = JSON.stringify(Market[ticker][filename]), 'utf-8');
+          fs.writeFileSync(filename, s = JSON.stringify(Market[ticker][date]), 'utf-8');
         } catch(e) {
           console.log('Error writing file '+filename+'!');
         }
