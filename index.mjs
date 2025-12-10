@@ -37,7 +37,7 @@ iterate(1970, Infinity, (y, m, d) => {
 });
 console.log('Mapped!');
 
-iterate(2024, 2025, (y, m, d) => console.log(y+' '+m+' '+d));
+iterate(2024, 2025, (y, m, d) => console.log(y+' '+m+' '+d) || true);
 
 const load = _ => {
   for (const ticker of tracked) {
