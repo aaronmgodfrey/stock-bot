@@ -34,7 +34,6 @@ iterate(1970, Infinity, async(y, m, d) => {
     return false;
   } else return true;
 });
-console.log('Mapped!');
 
 const load = _ => {
   for (const ticker of tracked) {
@@ -76,9 +75,11 @@ const save = _ => {
     });
   }
 }
-load();
-console.log(Market);
-save();
+setTimeout(() => {
+  load();
+  console.log(Market);
+  save();
+}, 5000);
 
 
 
