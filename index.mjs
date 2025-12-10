@@ -39,7 +39,7 @@ const load = _ => {
     }
   }
 }
-load();
+//load();
 
 // year inclusive
 // current day hard limit
@@ -59,7 +59,7 @@ const iterate = (startYear, endYear, action) => {
 }
 
 let now = Date.now();
-iterate(1970, Infinity, (y, m, d) => {
+iterate(1970, 2000, (y, m, d) => {
   now -= 1000*60*60*24;
   if (now <= 0) {
     console.log('Today is '+y+' '+m+'d');
