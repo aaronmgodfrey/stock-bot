@@ -4,52 +4,17 @@ import fs from 'fs';
 const token = fs.readFileSync('token.txt', 'utf-8').trim();
 const rest = restClient(token, 'https://api.massive.com');
 
+const startYear = 2024;
 const tracked = ['TSLA'];
-
 const Market = {};
-const startYear = 2024, currYear = 2025;
-/*
-January: 31 days 
-February: 28 days (29 days in a leap year) 
-March: 31 days 
-April: 30 days 
-May: 31 days 
-June: 30 days 
-July: 31 days 
-August: 31 days 
-September: 30 days 
-October: 31 days 
-November: 30 days 
-December: 31 days 
-*/
-const d = [0, 31, 28, 31, ]
-const load = _ => {
-  for (const ticker of tracked) {
-    Market[ticker] = {};
-    for (let i = startYear; i < currYear; i++) {
-      const d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-      for (let l = 1; l <= 12; l++) {
-        for (let k = 1; k <= d[l]; k++) {
-          const filename = `${i}-${l < 10 ? '0'+l : l}-${k < 10 ? '0'+k : k}`;
-          console.log(filename);
-          //if (fs.existsSync(
-          //Market[ticker] = {...Market[ticker], JSON.parse()};
-        }
-      }
-    }
-  }
-}
-//load();
-
-// year inclusive
-// current day hard limit
-// parse real time by Date.now();
-
+let YEAR, MONTH, DAY;
+YEAR = MONTH = DAY = Infinity;
 const iterate = (startYear, endYear, action) => {
-  for (let i = startYear; i < endYear; i++) {
-    const d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    for (let l = 1; l <= 12; l++) {
-      for (let k = 1; k <= d[l]; k++) {
+  for (let i = startYear; i <= Math.min(endYear, YEAR); i++) {
+    const unfinishedYear = i == YEAR, d = [0, 31, i%4 == 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    for (let l = 1; l <= unfinishedYear ? Math.min(MONTH, 12) : 12; l++) {
+      const unfinishedMonth = unfinishedYear && l == MONTH;
+      for (let k = 1; k <= unfinishedMonth ? Math.min(DAY, d[l]); k++) {
         //const filename = `${i}-${l < 10 ? '0'+l : l}-${k < 10 ? '0'+k : k}`;
         if (!action(i, l, k)) return; // year, month, day
       }
@@ -61,13 +26,25 @@ console.log('------------------');
 console.log('Mapping timeframe');
 let now = Date.now();
 iterate(1970, Infinity, (y, m, d) => {
-  now -= 1000*60*60*24;
+  now -= 86400000;
   if (now <= 0) {
-    console.log('Today is '+y+' '+m+' '+d);
+    YEAR = YEAR;
+    MONTH = MONTH;
+    DAY = DAY-1; // Today isn't fully mapped!
+    console.log('Date.now() renders today as '+y+'-'+m+'-'+d);
     return false;
   } else return true;
 });
-console.log('Done!');
+console.log('Mapped!');
+
+iterate(2024, 2025, (y, m, d) => console.log);
+
+const load = _ => {
+  for (const ticker of tracked) {
+    Market[ticker] = {};
+    iterate(startYear, YEAR);
+  }
+}
 
 
 /*
