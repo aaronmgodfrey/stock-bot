@@ -46,7 +46,7 @@ const load = _ => {
         return true;
       }
       try {
-        Market[ticker][date] = JSON.parse(filename);
+        Market[ticker][date] = JSON.parse(fs.readFileSync(filename, 'utf-8'));
       } catch(e) {
         console.warn(filename+' is corrupted!');
         Market[ticker][date] = [];
