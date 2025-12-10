@@ -15,8 +15,7 @@ const iterate = (startYear, endYear, action) => {
     for (let l = 1; l <= (unfinishedYear ? Math.min(MONTH, 12) : 12); l++) {
       const unfinishedMonth = unfinishedYear && l == MONTH;
       for (let k = 1; k <= (unfinishedMonth ? Math.min(DAY, d[l]) : d[l]); k++) {
-        //const filename = `${i}-${l < 10 ? '0'+l : l}-${k < 10 ? '0'+k : k}`;
-        if (!action(i, l, k)) return; // year, month, day
+        if (!(await action(i, l, k))) return; // year, month, day
       }
     }
   }
@@ -25,7 +24,7 @@ const iterate = (startYear, endYear, action) => {
 console.log('------------------');
 console.log('Mapping timeframe');
 let now = Date.now();
-iterate(1970, Infinity, (y, m, d) => {
+iterate(1970, Infinity, async(y, m, d) => {
   now -= 86400000;
   if (now <= 0) {
     YEAR = y;
@@ -37,14 +36,46 @@ iterate(1970, Infinity, (y, m, d) => {
 });
 console.log('Mapped!');
 
-iterate(2024, 2025, (y, m, d) => console.log(y+' '+m+' '+d) || true);
-
 const load = _ => {
   for (const ticker of tracked) {
+    console.log('Loading ticker: '+ticker);
     Market[ticker] = {};
-    iterate(startYear, YEAR);
+    iterate(startYear, YEAR, async(y, m, d) => {
+      const filename = `${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}.json`;
+      if (!fs.existsSync(filename)) {
+        Market[ticker][filename] = [];
+        continue;
+      }
+      try {
+        Market[ticker][filename] = JSON.parse(filename);
+      } catch(e) {
+        console.warn(filename+' is corrupted!');
+        Market[ticker][filename] = [];
+      }
+    });
   }
 }
+const save = _ => {
+  for (const ticker of tracked) {
+    console.log('Saving ticker: '+ticker);
+    iterate(startYear, YEAR, (y, m, d) => {
+      const filename = `${ticker}-${y}-${m < 10 ? '0'+m : m}-${d < 10 ? '0'+d : d}.json`;
+      if (!fs.existsSync(filename)) {
+        console.log('Creating '+filename+'...');
+        let s;
+        try {
+          fs.writeFileSync(filename, s = JSON.stringify(Market[ticker][filename]), 'utf-8');
+        } catch(e) {
+          console.log('Error writing file '+filename+'!');
+        }
+        console.log('Done! @ '+s.length+' char');
+      } else console.log(filename+' exists, skipping!');
+    });
+  }
+}
+load();
+save();
+
 
 
 /*
