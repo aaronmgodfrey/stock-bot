@@ -24,7 +24,6 @@ December: 31 days
 */
 const d = [0, 31, 28, 31, ]
 const load = _ => {
-  Market = {};
   for (const ticker of tracked) {
     Market[ticker] = {};
     for (let i = startYear; i < currYear; i++) {
