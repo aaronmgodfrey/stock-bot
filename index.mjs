@@ -78,17 +78,16 @@ const save = _ => {
 start = _ => {
   load();
   console.log(Market);
+  download();
   save();
 }
 
 
 
-/*
-Market
-  Ticker
-    Day @ 2023-01-24 : [], // minutely
-
-*/
+const download = _ => {
+  for (const ticker of tracked) {
+  }
+}
 
 async function example_getStocksAggregates() {
   try {
